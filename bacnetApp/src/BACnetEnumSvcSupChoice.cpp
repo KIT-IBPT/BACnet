@@ -1,0 +1,148 @@
+/*
+ * BACnetEnumSvcSupChoice.cpp
+ *
+ *  Created on: Jun 15, 2018
+ *      Author: 8w4
+ */
+
+#include <BACnetEnumSvcSupChoice.h>
+#include <stdexcept>
+#include <iostream>
+#include <sstream>
+
+BACnetSvcSupChoice::BACnetSvcSupChoice(unsigned int const enumValue, string const name)
+: BACnetEnumSingle::BACnetEnumSingle(enumValue, name)
+{
+
+	if(enumValue > MAX_PROTO_SVC_SUP_CHOICE) {
+		stringstream ss;
+
+		ss << "\tError: Cannot create BACnetSvcSupChoice. The enumValue (" << enumValue << ") parameter is out of range."
+				" The valid range is 0-" << MAX_PROTO_SVC_SUP_CHOICE << "." << endl;
+		throw std::invalid_argument(ss.str());
+	}
+}
+
+BACnetSvcSupChoice::~BACnetSvcSupChoice() {
+	// TODO Auto-generated destructor stub
+}
+
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_ACKNOWLEDGE_ALARM = BACnetSvcSupChoice(0, "SERVICE_SUPPORTED_ACKNOWLEDGE_ALARM");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION = BACnetSvcSupChoice(1, "SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_CONFIRMED_EVENT_NOTIFICATION = BACnetSvcSupChoice(2, "SERVICE_SUPPORTED_CONFIRMED_EVENT_NOTIFICATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_GET_ALARM_SUMMARY = BACnetSvcSupChoice(3, "SERVICE_SUPPORTED_GET_ALARM_SUMMARY");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_GET_ENROLLMENT_SUMMARY = BACnetSvcSupChoice(4, "SERVICE_SUPPORTED_GET_ENROLLMENT_SUMMARY");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_SUBSCRIBE_COV = BACnetSvcSupChoice(5, "SERVICE_SUPPORTED_SUBSCRIBE_COV");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_ATOMIC_READ_FILE = BACnetSvcSupChoice(6, "SERVICE_SUPPORTED_ATOMIC_READ_FILE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_ATOMIC_WRITE_FILE = BACnetSvcSupChoice(7, "SERVICE_SUPPORTED_ATOMIC_WRITE_FILE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_ADD_LIST_ELEMENT = BACnetSvcSupChoice(8, "SERVICE_SUPPORTED_ADD_LIST_ELEMENT");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_REMOVE_LIST_ELEMENT = BACnetSvcSupChoice(9, "SERVICE_SUPPORTED_REMOVE_LIST_ELEMENT");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_CREATE_OBJECT = BACnetSvcSupChoice(10, "SERVICE_SUPPORTED_CREATE_OBJECT");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_DELETE_OBJECT = BACnetSvcSupChoice(11, "SERVICE_SUPPORTED_DELETE_OBJECT");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_READ_PROPERTY = BACnetSvcSupChoice(12, "SERVICE_SUPPORTED_READ_PROPERTY");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_READ_PROP_CONDITIONAL = BACnetSvcSupChoice(13, "SERVICE_SUPPORTED_READ_PROP_CONDITIONAL");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_READ_PROP_MULTIPLE = BACnetSvcSupChoice(14, "SERVICE_SUPPORTED_READ_PROP_MULTIPLE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_WRITE_PROPERTY = BACnetSvcSupChoice(15, "SERVICE_SUPPORTED_WRITE_PROPERTY");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_WRITE_PROP_MULTIPLE = BACnetSvcSupChoice(16, "SERVICE_SUPPORTED_WRITE_PROP_MULTIPLE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_DEVICE_COMMUNICATION_CONTROL = BACnetSvcSupChoice(17, "SERVICE_SUPPORTED_DEVICE_COMMUNICATION_CONTROL");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_PRIVATE_TRANSFER  = BACnetSvcSupChoice(18, "SERVICE_SUPPORTED_PRIVATE_TRANSFER");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_TEXT_MESSAGE = BACnetSvcSupChoice(19, "SERVICE_SUPPORTED_TEXT_MESSAGE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_REINITIALIZE_DEVICE = BACnetSvcSupChoice(20, "SERVICE_SUPPORTED_REINITIALIZE_DEVICE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_VT_OPEN = BACnetSvcSupChoice(21, "SERVICE_SUPPORTED_VT_OPEN");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_VT_CLOSE = BACnetSvcSupChoice(22, "SERVICE_SUPPORTED_VT_CLOSE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_VT_DATA = BACnetSvcSupChoice(23, "SERVICE_SUPPORTED_VT_DATA");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_AUTHENTICATE = BACnetSvcSupChoice(24, "SERVICE_SUPPORTED_AUTHENTICATE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_REQUEST_KEY = BACnetSvcSupChoice(25, "SERVICE_SUPPORTED_REQUEST_KEY");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_I_AM = BACnetSvcSupChoice(26, "SERVICE_SUPPORTED_I_AM");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_I_HAVE = BACnetSvcSupChoice(27, "SERVICE_SUPPORTED_I_HAVE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_UNCONFIRMED_COV_NOTIFICATION = BACnetSvcSupChoice(28, "SERVICE_SUPPORTED_UNCONFIRMED_COV_NOTIFICATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_UNCONFIRMED_EVENT_NOTIFICATION = BACnetSvcSupChoice(29, "SERVICE_SUPPORTED_UNCONFIRMED_EVENT_NOTIFICATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_UNCONFIRMED_PRIVATE_TRANSFER = BACnetSvcSupChoice(30, "SERVICE_SUPPORTED_UNCONFIRMED_PRIVATE_TRANSFER");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_UNCONFIRMED_TEXT_MESSAGE = BACnetSvcSupChoice(31, "SERVICE_SUPPORTED_UNCONFIRMED_TEXT_MESSAGE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_TIME_SYNCHRONIZATION = BACnetSvcSupChoice(32, "SERVICE_SUPPORTED_TIME_SYNCHRONIZATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_WHO_HAS = BACnetSvcSupChoice(33, "SERVICE_SUPPORTED_WHO_HAS");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_WHO_IS = BACnetSvcSupChoice(34, "SERVICE_SUPPORTED_WHO_IS");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_READ_RANGE = BACnetSvcSupChoice(35, "SERVICE_SUPPORTED_READ_RANGE");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_UTC_TIME_SYNCHRONIZATION = BACnetSvcSupChoice(36, "SERVICE_SUPPORTED_UTC_TIME_SYNCHRONIZATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_LIFE_SAFETY_OPERATION = BACnetSvcSupChoice(37, "SERVICE_SUPPORTED_LIFE_SAFETY_OPERATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_SUBSCRIBE_COV_PROPERTY = BACnetSvcSupChoice(38, "SERVICE_SUPPORTED_SUBSCRIBE_COV_PROPERTY");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_GET_EVENT_INFORMATION = BACnetSvcSupChoice(39, "SERVICE_SUPPORTED_GET_EVENT_INFORMATION");
+BACnetSvcSupChoice const BACnetEnumSvcSupChoice::SERVICE_SUPPORTED_WRITE_GROUP = BACnetSvcSupChoice(40, "SERVICE_SUPPORTED_WRITE_GROUP");
+
+std::map<uint16_t, BACnetSvcSupChoice const *> BACnetEnumSvcSupChoice::objectMap = BACnetEnumSvcSupChoice::init_map();
+
+
+std::map<uint16_t, BACnetSvcSupChoice const *> BACnetEnumSvcSupChoice::init_map() {
+
+	std::map<uint16_t, BACnetSvcSupChoice const *> lmap;
+
+	lmap[SERVICE_SUPPORTED_ACKNOWLEDGE_ALARM.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_ACKNOWLEDGE_ALARM;
+	lmap[SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION;
+	lmap[SERVICE_SUPPORTED_CONFIRMED_EVENT_NOTIFICATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_CONFIRMED_EVENT_NOTIFICATION;
+	lmap[SERVICE_SUPPORTED_GET_ALARM_SUMMARY.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_GET_ALARM_SUMMARY;
+	lmap[SERVICE_SUPPORTED_GET_ENROLLMENT_SUMMARY.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_GET_ENROLLMENT_SUMMARY;
+	lmap[SERVICE_SUPPORTED_SUBSCRIBE_COV.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_SUBSCRIBE_COV;
+	lmap[SERVICE_SUPPORTED_ATOMIC_READ_FILE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_ATOMIC_READ_FILE;
+	lmap[SERVICE_SUPPORTED_ATOMIC_WRITE_FILE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_ATOMIC_WRITE_FILE;
+	lmap[SERVICE_SUPPORTED_ADD_LIST_ELEMENT.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_ADD_LIST_ELEMENT;
+	lmap[SERVICE_SUPPORTED_REMOVE_LIST_ELEMENT.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_REMOVE_LIST_ELEMENT;
+	lmap[SERVICE_SUPPORTED_CREATE_OBJECT.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_CREATE_OBJECT;
+	lmap[SERVICE_SUPPORTED_DELETE_OBJECT.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_DELETE_OBJECT;
+	lmap[SERVICE_SUPPORTED_READ_PROPERTY.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_READ_PROPERTY;
+	lmap[SERVICE_SUPPORTED_READ_PROP_CONDITIONAL.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_READ_PROP_CONDITIONAL;
+	lmap[SERVICE_SUPPORTED_READ_PROP_MULTIPLE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_READ_PROP_MULTIPLE;
+	lmap[SERVICE_SUPPORTED_WRITE_PROPERTY.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_WRITE_PROPERTY;
+	lmap[SERVICE_SUPPORTED_WRITE_PROP_MULTIPLE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_WRITE_PROP_MULTIPLE;
+	lmap[SERVICE_SUPPORTED_DEVICE_COMMUNICATION_CONTROL.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_DEVICE_COMMUNICATION_CONTROL;
+	lmap[SERVICE_SUPPORTED_PRIVATE_TRANSFER.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_PRIVATE_TRANSFER;
+	lmap[SERVICE_SUPPORTED_TEXT_MESSAGE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_TEXT_MESSAGE;
+	lmap[SERVICE_SUPPORTED_REINITIALIZE_DEVICE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_REINITIALIZE_DEVICE;
+	lmap[SERVICE_SUPPORTED_VT_OPEN.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_VT_OPEN;
+	lmap[SERVICE_SUPPORTED_VT_CLOSE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_VT_CLOSE;
+	lmap[SERVICE_SUPPORTED_VT_DATA.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_VT_DATA;
+	lmap[SERVICE_SUPPORTED_AUTHENTICATE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_AUTHENTICATE;
+	lmap[SERVICE_SUPPORTED_REQUEST_KEY.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_REQUEST_KEY;
+	lmap[SERVICE_SUPPORTED_I_AM.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_I_AM;
+	lmap[SERVICE_SUPPORTED_I_HAVE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_I_HAVE;
+	lmap[SERVICE_SUPPORTED_UNCONFIRMED_COV_NOTIFICATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_UNCONFIRMED_COV_NOTIFICATION;
+	lmap[SERVICE_SUPPORTED_UNCONFIRMED_EVENT_NOTIFICATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_UNCONFIRMED_EVENT_NOTIFICATION;
+	lmap[SERVICE_SUPPORTED_UNCONFIRMED_PRIVATE_TRANSFER.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_UNCONFIRMED_PRIVATE_TRANSFER;
+	lmap[SERVICE_SUPPORTED_UNCONFIRMED_TEXT_MESSAGE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_UNCONFIRMED_TEXT_MESSAGE;
+	lmap[SERVICE_SUPPORTED_TIME_SYNCHRONIZATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_TIME_SYNCHRONIZATION;
+	lmap[SERVICE_SUPPORTED_WHO_HAS.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_WHO_HAS;
+	lmap[SERVICE_SUPPORTED_WHO_IS.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_WHO_IS;
+	lmap[SERVICE_SUPPORTED_READ_RANGE.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_READ_RANGE;
+	lmap[SERVICE_SUPPORTED_UTC_TIME_SYNCHRONIZATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_UTC_TIME_SYNCHRONIZATION;
+	lmap[SERVICE_SUPPORTED_LIFE_SAFETY_OPERATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_LIFE_SAFETY_OPERATION;
+	lmap[SERVICE_SUPPORTED_SUBSCRIBE_COV_PROPERTY.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_SUBSCRIBE_COV_PROPERTY;
+	lmap[SERVICE_SUPPORTED_GET_EVENT_INFORMATION.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_GET_EVENT_INFORMATION;
+	lmap[SERVICE_SUPPORTED_WRITE_GROUP.getValue()] = (BACnetSvcSupChoice const *) &SERVICE_SUPPORTED_WRITE_GROUP;
+
+	return lmap;
+}
+
+BACnetSvcSupChoice const &BACnetEnumSvcSupChoice::getEnumByValue(uint16_t enumValue) {
+
+	std::map<uint16_t, BACnetSvcSupChoice const *>::iterator itr = objectMap.find(enumValue);
+
+	/** If the object DOES exist, itr will point to it. Otherwise iter points to the object.end()*/
+	if(itr != objectMap.end()) {
+		return *itr->second;
+	}
+	else {
+		ostringstream os;
+		os << enumValue;
+		std::string s = "Invalid Enum Value (" + os.str() + "): BACnetEnumSvcSupChoice::getEnumByValue(uint16_t enumValue)\n";
+		throw std::invalid_argument(s);
+	}
+}
+
+BACnetEnumSvcSupChoice::iterator BACnetEnumSvcSupChoice::getBegin(void) {
+	return objectMap.begin();
+}
+
+BACnetEnumSvcSupChoice::iterator BACnetEnumSvcSupChoice::getEnd(void) {
+	return objectMap.end();
+}
+
+

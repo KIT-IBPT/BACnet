@@ -1,0 +1,21 @@
+# Directories created by EPICS make system
+bin/
+db/
+dbd/
+include/
+lib/
+O.Common/
+O.linux-x86_64/
+O.linux-x86/
+O.win32-x86/
+O.windows-x64/
+
+# EPICS_BASE=<local path>
+configure/RELEASE
+
+# envPaths that gets created in iocBoot/<iocName>
+#iocBoot/ioctestIoc/st.cmd
+iocBoot/ioctestIoc/envPaths
+	
+# VI and EDM temp files
+*~

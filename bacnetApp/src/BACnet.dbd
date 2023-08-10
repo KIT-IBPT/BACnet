@@ -1,0 +1,8 @@
+driver(drvBacnet)
+device(ai,INST_IO,dev_ai_bacnet,"BACnet")
+device(ao,INST_IO,dev_ao_bacnet,"BACnet")
+device(stringin,INST_IO,dev_si_bacnet,"BACnet")
+
+device(ai,INST_IO,dev_ai_bacnet_stats,"BACnetStats")
+
+registrar(drvBACnet_Register)
