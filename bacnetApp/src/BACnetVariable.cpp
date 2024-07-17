@@ -31,8 +31,8 @@
 
 BACnetVariable::BACnetVariable(BACnetVarFuncChoice const &varFunc, BACnetObjPropRef const &objectPropRef,
 		const BACnetDevice &dev)
-:func(varFunc), objPropRef(objectPropRef), err(), errPresent(false), doWrite(false), lock(),
- devCallback(dev)
+:func(varFunc), objPropRef(objectPropRef), err(), errPresent(false), timeoutErrPresent(false),
+ doWrite(false), lock(), devCallback(dev)
 {
 	BACnetAppDataType *pv = NULL;
 	pv = determineDataType(this->objPropRef);
@@ -52,8 +52,8 @@ BACnetVariable::BACnetVariable(BACnetVarFuncChoice const &varFunc, BACnetObjProp
 
 BACnetVariable::BACnetVariable(BACnetVarFuncChoice const &varFunc, BACnetObjPropRef const &objectPropRef,
 			BACnetApplicationDataTypeChoice const &dataType, const BACnetDevice &dev)
-:func(varFunc), objPropRef(objectPropRef), err(), errPresent(false), doWrite(false), lock(),
- devCallback(dev)
+:func(varFunc), objPropRef(objectPropRef), err(), errPresent(false), timeoutErrPresent(false),
+ doWrite(false), lock(), devCallback(dev)
 {
 	BACnetAppDataType *pv = NULL;
 	pv = createDataType(&dataType);
@@ -209,16 +209,19 @@ void BACnetVariable::decode(std::list<BACnetApplicationData> &pvDataList) {
 
 	}
 	this->errPresent = false;
+	this->timeoutErrPresent = false;
 }
 
 void BACnetVariable::decode(BACnetApplicationData &pvData) {
 	(*this->propValList.begin())->decode(pvData);
 	this->errPresent = false;
+	this->timeoutErrPresent = false;
 }
 
 void BACnetVariable::decode(const BACnetApplicationData &pvData) {
 	(*this->propValList.begin())->decode(pvData);
 	this->errPresent = false;
+	this->timeoutErrPresent = false;
 }
 
 void BACnetVariable::printData(void) const {
@@ -247,16 +250,25 @@ bool BACnetVariable::hasArrayIndex(void) const {
 }
 
 bool BACnetVariable::hasError(void) const {
-	return this->errPresent;
+	return this->errPresent || this->timeoutErrPresent;
 }
 
 void BACnetVariable::setError(const BACnetErrorPdu &bacError) {
 	this->err = bacError;
 	this->errPresent = true;
+	this->timeoutErrPresent = false;
+}
+
+void BACnetVariable::setTimeoutError() {
+	this->timeoutErrPresent = true;
 }
 
 string BACnetVariable::getErrorString(void) const {
-	return this->err.toString();
+	if (this->timeoutErrPresent) {
+		return "Communication-Timeout";
+	} else {
+		return this->err.toString();
+	}
 }
 
 const propValList_t &BACnetVariable::getPropValList(void) {
