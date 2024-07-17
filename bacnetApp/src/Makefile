@@ -34,6 +34,7 @@ USR_CXXFLAGS += -fpermissive -DBUILD_WITH_EPICS
 PROD_IOC = bacnet
 # bacnet.dbd will be created and installed
 DBD += bacnet.dbd
+DBDCAT += bacnetSupport.dbd
 
 # bacnet.dbd will be made up from these files:
 bacnet_DBD += base.dbd
@@ -42,6 +43,7 @@ bacnet_DBD += BACnet.dbd
 #bacnet_DBD += dbSubExample.dbd
 #bacnet_DBD += bacnetHello.dbd
 #bacnet_DBD += initTrace.dbd
+bacnetSupport_DBD += BACnet.dbd
 
 # Add all the support libraries needed by this IOC
 #bacnet_LIBS += xxx
@@ -130,7 +132,7 @@ bacnetlib_SRCS += BACnetPropertyRef.cpp
 bacnetlib_SRCS += BnetReadAccessSpec.cpp
 bacnetlib_SRCS += BACnetEnumTxRxEr.cpp
 bacnetlib_SRCS += DevTxRxErGrp.cpp
-
+bacnetlib_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 # bacnet_registerRecordDeviceDriver.cpp derives from bacnet.dbd
 bacnet_SRCS += bacnet_registerRecordDeviceDriver.cpp
