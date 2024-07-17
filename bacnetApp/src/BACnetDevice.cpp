@@ -1520,7 +1520,7 @@ void BACnetDevice::createRpmList(BACnetVariableList_t &listIn, ListOfBacVarList_
 						 * so same object-ids should be grouped together.
 						 * */
 
-						while((*listInItr)->getObjectIdentifier() == opRef->getObjectId()) {
+						while(listInItr != listIn.end() && (*listInItr)->getObjectIdentifier() == opRef->getObjectId()) {
 
 							if((*listInItr)->hasDataInPropValList()) {
 
@@ -1895,8 +1895,3 @@ uint32_t BACnetDevice::getRx(void) const {
 uint32_t BACnetDevice::getEr(void) const {
 	return this->er;
 }
-
-
-
-
-
