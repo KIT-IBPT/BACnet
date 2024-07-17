@@ -584,6 +584,19 @@ void BACnetDevice::tsmApduTimeoutHandler(Tsm &tsm) {
 		 * or the user realizes that they made a mistake and removes this instance from the definition file*/
 		this->bindStatus = UNBOUND;
 	}
+
+	BACnetVariable *var = tsm.getCallbackVariable();
+	if(var) {
+		var->setTimeoutError();
+	}
+	std::list<BACnetVariable *> const *varList = tsm.getRpmCallbackVariable();
+	if (varList) {
+		for (std::list<BACnetVariable *>::const_iterator itr = varList->begin();
+				itr != varList->end(); ++itr) {
+			(*itr)->setTimeoutError();
+		}
+	}
+
 	cout << "Freeing TSM..." << endl << endl;
 	this->tsmp->freeTsm(&tsm);
 }

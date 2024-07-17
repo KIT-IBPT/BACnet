@@ -30,6 +30,7 @@ private:
 	std::list<BACnetAppDataType *> propValList;
 	BACnetErrorPdu err;
 	bool errPresent;
+	bool timeoutErrPresent;
 	bool doWrite;
 
 	epicsMutex lock;
@@ -89,6 +90,7 @@ public:
 	bool hasArrayIndex(void) const;
 	bool hasError(void) const;
 	void setError(const BACnetErrorPdu &bacError);
+	void setTimeoutError();
 	string getErrorString(void) const;
 
 	const propValList_t &getPropValList(void);
