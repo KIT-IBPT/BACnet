@@ -19,6 +19,13 @@
 #include "BACnetDevice.h"
 #include "BACnetTag.h"
 
+#if defined(__APPLE__) || (defined(__unix__) && defined(BSD))
+#include <ifaddrs.h>
+#include <net/if_dl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#endif
+
 std::map<string, BACnetConnection *> BACnetConnection::connectionMap;
 std::map<struct in_addr, BACnetConnection *, inAddrComp> BACnetConnection::ipToConnMap;
 
@@ -341,6 +348,33 @@ SOCKET BACnetConnection::getSocket(void) {
 	return this->bacnetSocket;
 }
 
+#if defined(__APPLE__) || (defined(__unix__) && defined(BSD))
+static bool getHWAddrBSD(char const *ifname, uint8_t *hwaddr) {
+	struct ifaddrs *ifaddrsList;
+	if (getifaddrs(&ifaddrsList) != 0) {
+		return false;
+	}
+	struct ifaddrs *ifaddrsEntry;
+	bool gotHWAddr = false;
+	for (ifaddrsEntry = ifaddrsList; ifaddrsEntry; ifaddrsEntry = ifaddrsEntry->ifa_next) {
+		if (ifaddrsEntry->ifa_addr
+				&& ifaddrsEntry->ifa_addr->sa_family == AF_LINK
+				&& !strcmp(ifname, ifaddrsEntry->ifa_name)) {
+			struct sockaddr_dl *addr = (struct sockaddr_dl *) ifaddrsEntry->ifa_addr;
+			if (addr->sdl_alen != 6) {
+				continue;
+			}
+			memcpy(hwaddr, LLADDR(addr), 6);
+            gotHWAddr = true;
+            break;
+        }
+    }
+    freeifaddrs(ifaddrsList);
+    ifaddrsList = NULL;
+	return gotHWAddr;
+}
+#endif
+
 void BACnetConnection::initialize(string const &ifname) {
 	stringstream ss;
 
@@ -372,8 +406,8 @@ void BACnetConnection::initialize(string const &ifname) {
 
 	/** In order to get the sockaddr from ioctl() you have to set the
 	 * interface name and family of the structure.*/
-	ifReq.ifr_ifru.ifru_addr.sa_family = AF_INET;
-	strncpy(ifReq.ifr_ifrn.ifrn_name, ifname.c_str(), IFNAMSIZ);
+	ifReq.ifr_addr.sa_family = AF_INET;
+	strncpy(ifReq.ifr_name, ifname.c_str(), IFNAMSIZ);
 
 	/** First call gets the IPV4 address.*/
 	int rx = ioctl(bacnetSocket, SIOCGIFADDR, &ifReq);
@@ -381,8 +415,8 @@ void BACnetConnection::initialize(string const &ifname) {
 	if (rx < 0 || erno != 0) {
 		ss.str("");
 		ss << "BACnetConnection::initialize: ioctl(sfd, SIOCGIFADDR, &ifReq) Failed!\n"
-				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_ifrn.ifrn_name << "\""
-				" and family AF_INET (" << ifReq.ifr_ifru.ifru_addr.sa_family << ")\n"
+				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_name << "\""
+				" and family AF_INET (" << ifReq.ifr_addr.sa_family << ")\n"
 				"\tioctl() returned : ( " << rx << "), and errno: (" << erno << ") \""
 				<< strerror(erno) << "\"" << endl;
 		close(bacnetSocket);
@@ -391,7 +425,7 @@ void BACnetConnection::initialize(string const &ifname) {
 
 	/** The ioctl() call succeeded... therefore the name supplied must exist.*/
 	this->ifName = string(ifname);
-	addrin = (sockaddr_in *) &ifReq.ifr_ifru.ifru_addr;
+	addrin = (sockaddr_in *) &ifReq.ifr_addr;
 	memcpy(&addr, &addrin->sin_addr, sizeof(in_addr));
 
 	/** First call gets the IPV4 Broadcast address.*/
@@ -400,15 +434,15 @@ void BACnetConnection::initialize(string const &ifname) {
 	if (rx < 0 || erno != 0) {
 		ss.str("");
 		ss << "BACnetConnection::initialize: ioctl(sfd, SIOCGIFBRDADDR, &ifReq) Failed!\n"
-				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_ifrn.ifrn_name << "\""
-				" and family AF_INET (" << ifReq.ifr_ifru.ifru_addr.sa_family << ")\n"
+				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_name << "\""
+				" and family AF_INET (" << ifReq.ifr_addr.sa_family << ")\n"
 				"\tioctl() returned : ( " << rx << "), and errno: (" << erno << ") \""
 				<< strerror(erno) << "\"" << endl;
 		close(bacnetSocket);
 		throw std::invalid_argument(ss.str());
 	}
 
-	addrin = (sockaddr_in *) &ifReq.ifr_ifru.ifru_addr;
+	addrin = (sockaddr_in *) &ifReq.ifr_addr;
 	memcpy(&broadaddr, &addrin->sin_addr, sizeof(in_addr));
 
 	/** First call gets the IPV4 netmask.*/
@@ -417,33 +451,45 @@ void BACnetConnection::initialize(string const &ifname) {
 	if (rx < 0 || erno != 0) {
 		ss.str("");
 		ss << "BACnetConnection::initialize: ioctl(sfd, SIOCGIFNETMASK, &ifReq) Failed!\n"
-				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_ifrn.ifrn_name << "\""
-				" and family AF_INET (" << ifReq.ifr_ifru.ifru_addr.sa_family << ")\n"
+				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_name << "\""
+				" and family AF_INET (" << ifReq.ifr_addr.sa_family << ")\n"
 				"\tioctl() returned : ( " << rx << "), and errno: (" << erno << ") \""
 				<< strerror(erno) << "\"" << endl;
 		close(bacnetSocket);
 		throw std::invalid_argument(ss.str());
 	}
 
-	addrin = (sockaddr_in *) &ifReq.ifr_ifru.ifru_addr;
+	addrin = (sockaddr_in *) &ifReq.ifr_addr;
 	memcpy(&netmask, &addrin->sin_addr, sizeof(in_addr));
 
 	/** First call gets the MAC address.*/
+	// TODO Fix this
+#if defined(__APPLE__) || (defined(__unix__) && defined(BSD))
+	if (!getHWAddrBSD(ifname.c_str(), hwaddr)) {
+		ss.str("");
+		ss << "BACnetConnection::initialize: getHWAddrBSD(ifname.c_str(), hwaddr) Failed!\n"
+				"\tFailed to get MAC address using name \"" << ifReq.ifr_name << "\"\n"
+				"\terrno: (" << erno << ") \""
+				<< strerror(erno) << "\"" << endl;
+		close(bacnetSocket);
+		throw std::invalid_argument(ss.str());
+	}
+#else
 	rx = ioctl(bacnetSocket, SIOCGIFHWADDR, &ifReq);
 	erno = errno;
 	if (rx < 0 || erno != 0) {
 		ss.str("");
 		ss << "BACnetConnection::initialize: ioctl(sfd, SIOCGIFHWADDR, &ifReq) Failed!\n"
-				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_ifrn.ifrn_name << "\""
-				" and family AF_INET (" << ifReq.ifr_ifru.ifru_addr.sa_family << ")\n"
+				"\tFailed to get IPV4 address using name \"" << ifReq.ifr_name << "\""
+				" and family AF_INET (" << ifReq.ifr_addr.sa_family << ")\n"
 				"\tioctl() returned : ( " << rx << "), and errno: (" << erno << ") \""
 				<< strerror(erno) << "\"" << endl;
 		close(bacnetSocket);
 		throw std::invalid_argument(ss.str());
 	}
 
-	memcpy(&hwaddr, &ifReq.ifr_ifru.ifru_addr.sa_data, 6);
-
+	memcpy(&hwaddr, &ifReq.ifr_addr.sa_data, 6);
+#endif
 }
 
 /** Throws...*/
